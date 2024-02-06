@@ -7,9 +7,12 @@
     <bean id="testFileNameProvider" class="ru.otus.homework.config.AppProperties">
         <constructor-arg value="questions.csv"/>
     </bean>
-    
+
+    <bean id="questionStreamConvertService" class="ru.otus.homework.service.QuestionStreamConvertServiceImpl" />
+
     <bean id="dao" class="ru.otus.homework.dao.CsvQuestionDao">
-        <constructor-arg ref="testFileNameProvider"/>
+        <constructor-arg ref="questionStreamConvertService" />
+        <constructor-arg ref="testFileNameProvider" />
     </bean>
 
     <bean id="ioService" class="ru.otus.homework.service.StreamsIOServiceImpl">

@@ -12,7 +12,7 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public void executeTest() {
-        var questions = dao.findAll();
+        var questions = dao.getAllQuestionsWithAnswers();
         outputService.print(questions);
     }
 }
