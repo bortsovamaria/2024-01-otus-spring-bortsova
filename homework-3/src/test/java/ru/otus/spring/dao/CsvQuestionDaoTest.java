@@ -16,20 +16,18 @@ class CsvQuestionDaoTest {
     @DisplayName("Должен корректно получать вопросы на английском языке")
     @Test
     void shouldBeCorrectGetQuestionsForEnLocale() {
-        QuestionUtils questionUtils = new QuestionUtils();
         QuestionDao questionDao = new CsvQuestionDao(new QuestionStreamConvertServiceImpl(), () -> "questions.csv");
         List<Question> resultQuestions = questionDao.getQuestions();
         assertThat(resultQuestions).isNotNull();
-        assertThat(resultQuestions).isEqualTo(questionUtils.getQuestionsForEnLocale());
+        assertThat(resultQuestions).isEqualTo(QuestionUtils.getQuestionsForEnLocale());
     }
 
     @DisplayName("Должен корректно получать вопросы на русском языке")
     @Test
     void shouldBeCorrectGetQuestionsForRuLocale() {
-        QuestionUtils questionUtils = new QuestionUtils();
         QuestionDao questionDao = new CsvQuestionDao(new QuestionStreamConvertServiceImpl(), () -> "questions_ru_RU.csv");
         List<Question> resultQuestions = questionDao.getQuestions();
         assertThat(resultQuestions).isNotNull();
-        assertThat(resultQuestions).isEqualTo(questionUtils.getQuestionsForRuLocale());
+        assertThat(resultQuestions).isEqualTo(QuestionUtils.getQuestionsForRuLocale());
     }
 }

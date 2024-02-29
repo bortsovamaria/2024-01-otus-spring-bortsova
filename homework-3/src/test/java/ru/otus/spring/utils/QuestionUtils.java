@@ -1,11 +1,13 @@
 package ru.otus.spring.utils;
 
+import lombok.experimental.UtilityClass;
 import ru.otus.spring.domain.Answer;
 import ru.otus.spring.domain.Question;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@UtilityClass
 public class QuestionUtils {
 
     public List<Question> getQuestionsForEnLocale() {

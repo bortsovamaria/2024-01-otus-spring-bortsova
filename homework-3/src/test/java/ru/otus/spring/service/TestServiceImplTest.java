@@ -30,8 +30,7 @@ class TestServiceImplTest {
     @DisplayName("Должен корректно запускать тестирование на английском языке")
     @Test
     void shouldBeCorrectExecuteTestForEnLocale() {
-        QuestionUtils questionUtils = new QuestionUtils();
-        given(questionDao.getQuestions()).willReturn(questionUtils.getQuestionsForEnLocale());
+        given(questionDao.getQuestions()).willReturn(QuestionUtils.getQuestionsForEnLocale());
         given(ioService.readIntForRangeWithPromptLocalized(1, 5,
                 "TestService.choose.answer",
                 "TestService.choose.answer.input.number.incorrect"))
@@ -49,8 +48,7 @@ class TestServiceImplTest {
     @DisplayName("Должен корректно запускать тестирование на русском языке")
     @Test
     void shouldBeCorrectExecuteTestForRuLocale() {
-        QuestionUtils questionUtils = new QuestionUtils();
-        given(questionDao.getQuestions()).willReturn(questionUtils.getQuestionsForRuLocale());
+        given(questionDao.getQuestions()).willReturn(QuestionUtils.getQuestionsForRuLocale());
         given(ioService.readIntForRangeWithPromptLocalized(1, 5,
                 "TestService.choose.answer",
                 "TestService.choose.answer.input.number.incorrect"))
