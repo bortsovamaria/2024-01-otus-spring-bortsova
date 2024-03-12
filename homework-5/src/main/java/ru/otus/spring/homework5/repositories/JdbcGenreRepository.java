@@ -1,6 +1,7 @@
 package ru.otus.spring.homework5.repositories;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -22,11 +23,13 @@ public class JdbcGenreRepository implements GenreRepository {
     private static final String FIND_BY_ID_QUERY = "select id, name from genres where id = :id";
 
 
+    private final JdbcOperations jdbc;
+
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
     @Override
     public List<Genre> findAll() {
-        return namedParameterJdbcOperations.query(FIND_ALL_QUERY, new GenreRowMapper());
+        return jdbc.query(FIND_ALL_QUERY, new GenreRowMapper());
     }
 
     @Override
