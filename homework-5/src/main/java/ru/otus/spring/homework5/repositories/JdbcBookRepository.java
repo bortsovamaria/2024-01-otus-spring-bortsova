@@ -2,7 +2,6 @@ package ru.otus.spring.homework5.repositories;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -41,8 +40,6 @@ public class JdbcBookRepository implements BookRepository {
 
     private static final String DELETE_QUERY = "delete from books where id = :id";
 
-    private final JdbcOperations jdbc;
-
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
     @Override
@@ -59,7 +56,7 @@ public class JdbcBookRepository implements BookRepository {
 
     @Override
     public List<Book> findAll() {
-        return jdbc.query(FIND_ALL_QUERY,
+        return namedParameterJdbcOperations.query(FIND_ALL_QUERY,
                 new BookRowMapper());
     }
 
