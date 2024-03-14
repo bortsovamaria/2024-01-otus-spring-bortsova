@@ -24,7 +24,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JdbcBookRepository implements BookRepository {
 
-    private static final String FIND_BY_ID_QUERY = "select * from books inner join authors " +
+    private static final String FIND_BY_ID_QUERY = "select books.author_id, " +
+            "authors.full_name, books.genre_id, genres.name, books.id, books.title from books " +
+            "inner join authors " +
             "on authors.id = books.author_id " +
             "inner join genres on genres.id = books.genre_id " +
             "where books.id = :id";
@@ -32,7 +34,8 @@ public class JdbcBookRepository implements BookRepository {
     private static final String INSERT_BOOK_QUERY = "insert into books (title, author_id, genre_id) " +
             "values (:title, :author_id, :genre_id)";
 
-    private static final String FIND_ALL_QUERY = "select * from books " +
+    private static final String FIND_ALL_QUERY = "select books.author_id, " +
+            "authors.full_name, books.genre_id, genres.name, books.id, books.title from books " +
             "inner join authors on authors.id = books.author_id " +
             "inner join genres on genres.id = books.genre_id";
 

@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JdbcGenreRepository implements GenreRepository {
 
-    private static final String FIND_ALL_QUERY = "select * from genres";
+    private static final String FIND_ALL_QUERY = "select id, name from genres";
 
     private static final String FIND_BY_ID_QUERY = "select id, name from genres where id = :id";
 

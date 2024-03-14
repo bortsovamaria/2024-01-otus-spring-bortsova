@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JdbcAuthorRepository implements AuthorRepository {
 
-    private static final String FIND_ALL_QUERY = "select * from authors";
+    private static final String FIND_ALL_QUERY = "select id, full_name from authors";
 
     private static final String FIND_BY_ID_QUERY = "select id, full_name from authors where id = :id";
 
