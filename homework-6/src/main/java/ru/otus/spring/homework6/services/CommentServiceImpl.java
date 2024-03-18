@@ -3,6 +3,7 @@ package ru.otus.spring.homework6.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.spring.homework6.exceptions.EntityNotFoundException;
 import ru.otus.spring.homework6.models.Book;
 import ru.otus.spring.homework6.models.Comment;
 import ru.otus.spring.homework6.repositories.BookRepository;
@@ -33,8 +34,25 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     @Override
-    public void saveComment(long bookId, String text) {
-        Optional<Book> book = bookRepository.findById(bookId);
-        book.ifPresent(value -> commentRepository.save(new Comment(0, text, value)));
+    public Comment insert(String text, long bookId) {
+        return save(0, text, bookId);
+    }
+
+    @Override
+    public Comment update(long id, String text, long bookId) {
+        return save(id, text, bookId);
+    }
+
+    @Transactional
+    @Override
+    public void deleteById(long id) {
+        commentRepository.deleteById(id);
+    }
+
+    public Comment save(long id, String text, long bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("Book with %d not found".formatted(bookId)));
+        Comment comment = new Comment(id, text, book);
+        return commentRepository.save(comment);
     }
 }

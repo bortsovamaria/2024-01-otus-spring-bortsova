@@ -59,4 +59,37 @@ class CommentRepositoryJpaTest {
         assertThat(actualBook).isNotNull().matches(s -> !s.getText().isEmpty())
                 .matches(s -> s.getBook().getId() > 0);
     }
+
+    @DisplayName("должен обновлять комментарий")
+    @Test
+    void shouldUpdatedComment() {
+        Comment initialComment = em.find(Comment.class, 1L);
+        Book book =
+                new Book(1L, "title",
+                        new Author(1L, "Author_1"),
+                        new Genre(1L, "Genre_1"));
+
+        Comment expectedComment = new Comment(1L, "edit", book);
+        em.detach(initialComment);
+
+        repositoryJpa.save(expectedComment);
+        val updatedComment = em.find(Comment.class, 1L);
+
+        assertThat(updatedComment.getText())
+                .isNotEqualTo(initialComment.getText())
+                .isEqualTo(expectedComment.getText());
+    }
+
+    @DisplayName("должен удалять комментарий по id ")
+    @Test
+    void shouldDeleteComment() {
+        val comment = em.find(Comment.class, 2L);
+        assertThat(comment).isNotNull();
+        em.detach(comment);
+
+        repositoryJpa.deleteById(2L);
+        val deletedComment = em.find(Comment.class, 2L);
+
+        assertThat(deletedComment).isNull();
+    }
 }

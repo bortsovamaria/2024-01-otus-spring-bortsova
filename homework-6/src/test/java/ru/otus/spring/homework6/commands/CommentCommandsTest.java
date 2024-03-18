@@ -19,6 +19,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static ru.otus.spring.homework6.utils.CommentUtils.EDIT_COMMENT_RESULT;
 
 @DisplayName("Тест команд shell для комментариев ")
 @SpringBootTest
@@ -28,7 +29,9 @@ public class CommentCommandsTest {
 
     private static final String COMMAND_FIND_COMMENT_BY_BOOK_ID = "cbi 1";
 
-    private static final String COMMAND_ADD_COMMENT_BY_BOOK_ID = "acbi 1";
+    private static final String COMMAND_ADD_COMMENT_BY_BOOK_ID = "acbi text 1";
+    private static final String COMMAND_UPDATE_COMMENT_BY_ID = "cupd 1 editComment 1";
+    private static final String COMMAND_DELETE_COMMENT_BY_ID = "cdel 3";
 
     private InputProvider inputProvider;
 
@@ -77,6 +80,30 @@ public class CommentCommandsTest {
     void shouldCorrectAddCommentBookById() throws Exception {
         when(inputProvider.readInput())
                 .thenReturn(() -> COMMAND_ADD_COMMENT_BY_BOOK_ID)
+                .thenReturn(null);
+
+        shell.run(inputProvider);
+        verify(resultHandlerService, times(1)).handle(argumentCaptor.capture());
+    }
+
+    @DisplayName("должен обновить комментарий")
+    @Test
+    void shouldUpdatedBook() throws Exception {
+        when(inputProvider.readInput())
+                .thenReturn(() -> COMMAND_UPDATE_COMMENT_BY_ID)
+                .thenReturn(null);
+
+        shell.run(inputProvider);
+        verify(resultHandlerService, times(1)).handle(argumentCaptor.capture());
+        List<Object> results = argumentCaptor.getAllValues();
+        assertThat(results).contains(EDIT_COMMENT_RESULT);
+    }
+
+    @DisplayName("должен удалять комментарий по id ")
+    @Test
+    void shouldDeleteBook() throws Exception {
+        when(inputProvider.readInput())
+                .thenReturn(() -> COMMAND_DELETE_COMMENT_BY_ID)
                 .thenReturn(null);
 
         shell.run(inputProvider);

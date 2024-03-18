@@ -67,11 +67,36 @@ public class CommentServiceImplTest {
         Author author = new Author(1L, "author 1");
         Genre genre = new Genre(1L, "genre 1");
         Book book = new Book(1L, "title", author, genre);
-        Comment comment = new Comment(0L, "text", book);
+        Comment expectedComment = new Comment(0L, "text", book);
 
-        doNothing().when(commentRepository).save(eq(comment));
+        given(commentRepository.save(expectedComment)).willReturn(expectedComment);
         given(bookRepository.findById(eq(1L))).willReturn(Optional.of(book));
-        commentService.saveComment(1L,"text");
-        verify(commentRepository, times(1)).save(eq(comment));
+        Comment actualComment = commentService.insert("text", book.getId());
+        assertEquals(expectedComment, actualComment);
+        verify(commentRepository, times(1)).save(eq(expectedComment));
+    }
+
+    @DisplayName("должен корректно обновлять комментарий")
+    @Test
+    void shouldCorrectUpdateComment() {
+        Author author = new Author(1L, "author 1");
+        Genre genre = new Genre(1L, "genre 1");
+        Book book = new Book(1L, "new title", author, genre);
+        Comment expectedComment = new Comment(1L, "editcomment", book);
+
+        given(bookRepository.findById(1L)).willReturn(Optional.of(book));
+        given(commentRepository.findById(1L)).willReturn(Optional.of(expectedComment));
+        given(commentRepository.save(expectedComment)).willReturn(expectedComment);
+        Comment actualComment = commentService.update(1L, "editcomment", book.getId());
+        assertEquals(expectedComment, actualComment);
+        verify(commentRepository, times(1)).save(eq(expectedComment));
+    }
+
+    @DisplayName("должен корректно удалять комментарий по идентификатору")
+    @Test
+    void shouldCorrectDeleteById() {
+        doNothing().when(commentRepository).deleteById(eq(1L));
+        commentService.deleteById(1L);
+        verify(commentRepository, times(1)).deleteById(eq(1L));
     }
 }

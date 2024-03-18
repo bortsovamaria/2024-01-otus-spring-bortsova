@@ -66,7 +66,7 @@ class BookRepositoryJpaTest {
                 .matches(s -> s.getAuthor() != null);
     }
 
-    @DisplayName("должен сохранять измененную книгу")
+    @DisplayName("должен обновлять книгу")
     @Test
     void shouldUpdatedBook() {
         Book initialBook = em.find(Book.class, 1L);

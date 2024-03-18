@@ -33,9 +33,22 @@ public class CommentCommands {
                 .collect(Collectors.joining("," + System.lineSeparator()));
     }
 
-    // acbi 1 comment_text
+    // acbi newComment 1
     @ShellMethod(value = "Add comment by book id", key = "acbi")
-    public void addCommentByBookId(long bookId, String text) {
-      commentService.saveComment(bookId, text);
+    public void addCommentByBookId(String text, long bookId) {
+      commentService.insert(text, bookId);
+    }
+
+    // cupd 4 editComment 1
+    @ShellMethod(value = "Update book", key = "cupd")
+    public String updateBook(long id, String text, long bookId) {
+        var savedComment = commentService.update(id, text, bookId);
+        return commentConverter.commentToString(savedComment);
+    }
+
+    // cdel 4
+    @ShellMethod(value = "Delete book by id", key = "cdel")
+    public void deleteBook(long id) {
+        commentService.deleteById(id);
     }
 }

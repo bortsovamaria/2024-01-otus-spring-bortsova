@@ -11,5 +11,9 @@ public interface CommentService {
 
     List<Comment> findByBookId(long bookId);
 
-    void saveComment(long bookId, String text);
+    Comment insert(String text, long bookId);
+
+    Comment update(long id, String text, long bookId);
+
+    void deleteById(long id);
 }
