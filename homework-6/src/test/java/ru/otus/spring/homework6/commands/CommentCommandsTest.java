@@ -25,13 +25,13 @@ import static ru.otus.spring.homework6.utils.CommentUtils.EDIT_COMMENT_RESULT;
 @SpringBootTest
 public class CommentCommandsTest {
 
-    private static final String COMMAND_FIND_COMMENT_BY_ID = "ci 1";
+    private static final String COMMAND_FIND_COMMENT_BY_ID = "ci 2";
 
-    private static final String COMMAND_FIND_COMMENT_BY_BOOK_ID = "cbi 1";
+    private static final String COMMAND_FIND_COMMENT_BY_BOOK_ID = "cbi 2";
 
-    private static final String COMMAND_ADD_COMMENT_BY_BOOK_ID = "acbi text 1";
-    private static final String COMMAND_UPDATE_COMMENT_BY_ID = "cupd 1 editComment 1";
-    private static final String COMMAND_DELETE_COMMENT_BY_ID = "cdel 3";
+    private static final String COMMAND_ADD_COMMENT_BY_BOOK_ID = "acbi text 2";
+    private static final String COMMAND_UPDATE_COMMENT_BY_ID = "cupd 1 editComment 2";
+    private static final String COMMAND_DELETE_COMMENT_BY_ID = "cdel 2";
 
     private InputProvider inputProvider;
 

@@ -1,18 +1,16 @@
 package ru.otus.spring.homework6.repositories;
 
-import jakarta.persistence.EntityGraph;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.homework6.models.Book;
 
 import java.util.List;
 import java.util.Optional;
-
-import static org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.FETCH;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,17 +21,24 @@ public class BookRepositoryJpa implements BookRepository {
 
     @Override
     public Optional<Book> findById(long id) {
-        return Optional.ofNullable(em.find(Book.class, id));
+        TypedQuery<Book> query = em.createQuery("select b from Book b " +
+                "left join fetch b.comments " +
+                "left join fetch b.author " +
+                "left join fetch b.genre where b.id = :id", Book.class);
+        query.setParameter("id", id);
+        return Optional.of(query.getSingleResult());
     }
 
     @Override
     public List<Book> findAll() {
-        EntityGraph<?> entityGraph = em.getEntityGraph("book-author-genre-graph-comment");
-        TypedQuery<Book> query = em.createQuery("select b from Book b", Book.class);
-        query.setHint(FETCH.getKey(), entityGraph);
+        TypedQuery<Book> query = em.createQuery("select b from Book b " +
+                "left join fetch b.comments " +
+                "left join fetch b.author " +
+                "left join fetch b.genre", Book.class);
         return query.getResultList();
     }
 
+    @Transactional
     @Override
     public Book save(Book book) {
         if (book.getId() == 0) {
@@ -42,6 +47,7 @@ public class BookRepositoryJpa implements BookRepository {
         return em.merge(book);
     }
 
+    @Transactional
     @Override
     public void deleteById(long id) {
         Query query = em.createQuery("delete " +

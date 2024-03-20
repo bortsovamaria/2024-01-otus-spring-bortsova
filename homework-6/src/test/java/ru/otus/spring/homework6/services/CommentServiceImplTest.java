@@ -53,12 +53,14 @@ public class CommentServiceImplTest {
     @DisplayName("должен корректно находить комментарии по идентификатору книги")
     @Test
     void shouldCorrectFindCommentByBookId() {
+        Book book = new Book(2L, "title", new Author(), new Genre(), List.of());
         Comment expectedComment =
-                new Comment(1L, "text", new Book(1, "title", new Author(), new Genre()));
-        given(commentRepository.findAllByBookId((eq(1L)))).willReturn(List.of(expectedComment));
-        List<Comment> actualComments = commentService.findByBookId(1L);
+                new Comment(2L, "text", book);
+        book.setComments(List.of(expectedComment));
+
+        given(bookRepository.findById(2L)).willReturn(Optional.of(book));
+        List<Comment> actualComments = commentService.findByBookId(2L);
         assertThat(actualComments).contains(expectedComment);
-        verify(commentRepository, times(1)).findAllByBookId(eq(1L));
     }
 
     @DisplayName("должен корректно добавлять комментарий")

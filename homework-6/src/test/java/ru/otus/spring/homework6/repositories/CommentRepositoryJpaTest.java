@@ -34,15 +34,6 @@ class CommentRepositoryJpaTest {
                 .usingRecursiveComparison().isEqualTo(expectedStudent);
     }
 
-    @DisplayName("должен загружать список всех комментариев по id книги")
-    @Test
-    void shouldFindAllCommentsByBookId() {
-        val expectedComment = em.find(Comment.class, 1L);
-        val actualComments = repositoryJpa.findAllByBookId(1L);
-
-        assertThat(actualComments).hasSize(2).containsAnyOf(expectedComment);
-    }
-
     @DisplayName("должен добавлять новый комментарий")
     @Test
     void shouldSaveNewBook() {

@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 class BookCommandsTest {
 
     private static final String COMMAND_FIND_ALL_BOOKS = "ab";
-    private static final String COMMAND_FIND_BOOK_BY_ID = "bbid 1";
+    private static final String COMMAND_FIND_BOOK_BY_ID = "bbid 2";
     private static final String COMMAND_INSERT_BOOK = "bins newBook 1 1";
     private static final String COMMAND_UPDATE_BOOK = "bupd 3 editedBook 3 2";
     private static final String COMMAND_DELETE_BOOK = "bdel 4";
