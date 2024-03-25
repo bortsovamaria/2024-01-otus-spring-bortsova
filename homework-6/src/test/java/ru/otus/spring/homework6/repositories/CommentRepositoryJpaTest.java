@@ -36,7 +36,7 @@ class CommentRepositoryJpaTest {
 
     @DisplayName("должен добавлять новый комментарий")
     @Test
-    void shouldSaveNewBook() {
+    void shouldSaveNewComment() {
         val author = new Author(1L, "Author_1");
         val genre = new Genre(1L, "Genre_1");
         val book = new Book(1L, "title", author, genre);

@@ -27,11 +27,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> findByBookId(long bookId) {
-        Optional<Book> book = bookRepository.findById(bookId);
-        if (book.isPresent()) {
-            return book.get().getComments();
-        }
-        throw new EntityNotFoundException("Book not found");
+        return commentRepository.findAllByBookId(bookId);
     }
 
     @Transactional
@@ -40,6 +36,7 @@ public class CommentServiceImpl implements CommentService {
         return save(0, text, bookId);
     }
 
+    @Transactional
     @Override
     public Comment update(long id, String text, long bookId) {
         return save(id, text, bookId);

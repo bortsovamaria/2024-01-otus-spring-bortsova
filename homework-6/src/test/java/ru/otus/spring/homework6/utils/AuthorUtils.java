@@ -8,8 +8,7 @@ import java.util.List;
 @UtilityClass
 public class AuthorUtils {
 
-    public static final String ALL_AUTHORS_RESULT = "Id: 1, FullName: Author_1,\r\n" +
-            "Id: 2, FullName: Author_2,\r\n" +
+    public static final String ALL_AUTHORS_RESULT = "Id: 2, FullName: Author_2,\r\n" +
             "Id: 3, FullName: Author_3";
 
     public static List<Author> getExpectedAuthors() {

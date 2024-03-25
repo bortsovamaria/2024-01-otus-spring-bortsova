@@ -2,11 +2,12 @@ package ru.otus.spring.homework6.repositories;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.homework6.models.Comment;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -21,7 +22,14 @@ public class CommentRepositoryJpa implements CommentRepository {
         return Optional.ofNullable(em.find(Comment.class, id));
     }
 
-    @Transactional
+    @Override
+    public List<Comment> findAllByBookId(long id) {
+        TypedQuery<Comment> query = em.createQuery("select c from Comment c " +
+                "join c.book b where b.id = :bookId", Comment.class);
+        query.setParameter("bookId", id);
+        return query.getResultList();
+    }
+
     @Override
     public Comment save(Comment comment) {
         if (comment.getId() == 0) {
@@ -30,7 +38,6 @@ public class CommentRepositoryJpa implements CommentRepository {
         return em.merge(comment);
     }
 
-    @Transactional
     @Override
     public void deleteById(long id) {
         Comment comment = em.find(Comment.class, id);
