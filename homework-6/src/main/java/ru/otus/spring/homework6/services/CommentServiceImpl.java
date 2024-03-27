@@ -1,6 +1,7 @@
 package ru.otus.spring.homework6.services;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.homework6.exceptions.EntityNotFoundException;
@@ -25,9 +26,15 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findById(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Comment> findByBookId(long bookId) {
-        return commentRepository.findAllByBookId(bookId);
+        Optional<Book> book = bookRepository.findById(bookId);
+        if (book.isPresent()) {
+            Hibernate.initialize(book.get().getComments());
+            return book.get().getComments();
+        }
+        throw new EntityNotFoundException("Book not found");
     }
 
     @Transactional
