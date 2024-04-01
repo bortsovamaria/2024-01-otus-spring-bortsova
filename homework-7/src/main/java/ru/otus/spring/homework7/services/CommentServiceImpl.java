@@ -3,6 +3,9 @@ package ru.otus.spring.homework7.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.spring.homework7.converters.CommentConverter;
+import ru.otus.spring.homework7.dto.BookDto;
+import ru.otus.spring.homework7.dto.CommentDto;
 import ru.otus.spring.homework7.exceptions.EntityNotFoundException;
 import ru.otus.spring.homework7.models.Book;
 import ru.otus.spring.homework7.models.Comment;
@@ -22,31 +25,34 @@ public class CommentServiceImpl implements CommentService {
 
     private final BookService bookService;
 
+    private final CommentConverter commentConverter;
+
     @Override
-    public Optional<Comment> findById(long id) {
-        return commentRepository.findById(id);
+    public Optional<CommentDto> findById(long id) {
+        return commentRepository.findById(id).map(commentConverter::toDto);
     }
 
-//    @Transactional(readOnly = true)
     @Override
-    public List<Comment> findByBookId(long bookId) {
-        Optional<Book> book = bookService.findById(bookId);
+    public List<CommentDto> findByBookId(long bookId) {
+        Optional<BookDto> book = bookService.findById(bookId);
         if (book.isPresent()) {
-            return book.get().getComments();
+            return book.get().getCommentsDto();
         }
         throw new EntityNotFoundException("Book not found");
     }
 
     @Transactional
     @Override
-    public Comment insert(String text, long bookId) {
-        return save(0, text, bookId);
+    public CommentDto insert(String note, long bookId) {
+        var comment = save(0, note, bookId);
+        return commentConverter.toDto(comment);
     }
 
     @Transactional
     @Override
-    public Comment update(long id, String text, long bookId) {
-        return save(id, text, bookId);
+    public CommentDto update(long id, String note, long bookId) {
+        var comment = save(id, note, bookId);
+        return commentConverter.toDto(comment);
     }
 
     @Transactional

@@ -7,7 +7,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.otus.spring.homework7.models.Author;
+import ru.otus.spring.homework7.converters.AuthorConverter;
+import ru.otus.spring.homework7.dto.AuthorDto;
 import ru.otus.spring.homework7.repositories.AuthorRepository;
 
 import java.util.List;
@@ -29,12 +30,16 @@ class AuthorServiceImplTest {
     @Autowired
     AuthorService authorService;
 
+    @Autowired
+    AuthorConverter authorConverter;
+
     @DisplayName("должен корректно находить всех авторов")
     @Test
     void shouldCorrectFindAllAuthors() {
+        authorConverter = new AuthorConverter();
         given(authorRepository.findAll()).willReturn(getExpectedAuthors());
-        List<Author> actualAuthors = authorService.findAll();
-        assertEquals(actualAuthors, getExpectedAuthors());
+        List<AuthorDto> actualAuthors = authorService.findAll();
+        assertEquals(actualAuthors, getExpectedAuthors().stream().map(authorConverter::toDto).toList());
         verify(authorRepository, times(1)).findAll();
     }
 }

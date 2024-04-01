@@ -1,5 +1,6 @@
 package ru.otus.spring.homework7.services;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -7,6 +8,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import ru.otus.spring.homework7.converters.AuthorConverter;
+import ru.otus.spring.homework7.converters.BookConverter;
+import ru.otus.spring.homework7.converters.CommentConverter;
+import ru.otus.spring.homework7.converters.GenreConverter;
+import ru.otus.spring.homework7.dto.BookDto;
 import ru.otus.spring.homework7.models.Author;
 import ru.otus.spring.homework7.models.Book;
 import ru.otus.spring.homework7.models.Genre;
@@ -42,13 +48,33 @@ class BookServiceImplTest {
     @Autowired
     BookService bookService;
 
+    @Autowired
+    BookConverter bookConverter;
+
+    @Autowired
+    AuthorConverter authorConverter;
+
+    @Autowired
+    GenreConverter genreConverter;
+
+    @Autowired
+    CommentConverter commentConverter;
+
+    @BeforeEach
+    void setUp() {
+        authorConverter = new AuthorConverter();
+        genreConverter = new GenreConverter();
+        commentConverter = new CommentConverter();
+        bookConverter = new BookConverter(authorConverter, genreConverter, commentConverter);
+    }
+
     @DisplayName("должен корректно находить книгу по идентификатору")
     @Test
     void shouldCorrectFindBookById() {
         Book expectedBook = new Book(1L, "title", new Author(), new Genre());
         given(bookRepository.findById(eq(1L))).willReturn(Optional.of(expectedBook));
-        Optional<Book> actualBook = bookService.findById(1L);
-        actualBook.ifPresent(book -> assertEquals(expectedBook, book));
+        Optional<BookDto> actualBook = bookService.findById(1L);
+        actualBook.ifPresent(book -> assertEquals(bookConverter.toDto(expectedBook), book));
         verify(bookRepository, times(1)).findById(eq(1L));
     }
 
@@ -56,8 +82,8 @@ class BookServiceImplTest {
     @Test
     void shouldCorrectFindAllBooks() {
         given(bookRepository.findAll()).willReturn(getExpectedBooks());
-        List<Book> actualBooks = bookService.findAll();
-        assertEquals(actualBooks, getExpectedBooks());
+        List<BookDto> actualBooks = bookService.findAll();
+        assertEquals(actualBooks, getExpectedBooks().stream().map(bookConverter::toDto).toList());
         verify(bookRepository, times(1)).findAll();
     }
 
@@ -70,8 +96,8 @@ class BookServiceImplTest {
         given(authorRepository.findById(eq(1L))).willReturn(Optional.of(author));
         given(genreRepository.findById(eq(1L))).willReturn(Optional.of(genre));
         given(bookRepository.save(expectedBook)).willReturn(expectedBook);
-        Book actualBook = bookService.insert("title", 1L, 1L);
-        assertEquals(expectedBook, actualBook);
+        BookDto actualBook = bookService.insert("title", 1L, 1L);
+        assertEquals(bookConverter.toDto(expectedBook), actualBook);
         verify(bookRepository, times(1)).save(eq(expectedBook));
     }
 
@@ -86,8 +112,8 @@ class BookServiceImplTest {
         given(authorRepository.findById(eq(2L))).willReturn(Optional.of(secondAuthor));
         given(genreRepository.findById(eq(1L))).willReturn(Optional.of(genre));
         given(bookRepository.save(expectedBook)).willReturn(expectedBook);
-        Book actualBook = bookService.update(1L, "new title", 2L, 1L);
-        assertEquals(expectedBook, actualBook);
+        BookDto actualBook = bookService.update(1L, "new title", 2L, 1L);
+        assertEquals(bookConverter.toDto(expectedBook), actualBook);
         verify(bookRepository, times(1)).save(eq(expectedBook));
     }
 

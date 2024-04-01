@@ -3,6 +3,8 @@ package ru.otus.spring.homework7.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.spring.homework7.converters.BookConverter;
+import ru.otus.spring.homework7.dto.BookDto;
 import ru.otus.spring.homework7.exceptions.EntityNotFoundException;
 import ru.otus.spring.homework7.models.Book;
 import ru.otus.spring.homework7.repositories.AuthorRepository;
@@ -21,27 +23,35 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
-    @Transactional
+    private final BookConverter bookConverter;
+
+    @Transactional(readOnly = true)
     @Override
-    public Optional<Book> findById(long id) {
-        return bookRepository.findById(id);
+    public Optional<BookDto> findById(long id) {
+        return bookRepository.findById(id)
+                .map(bookConverter::toDto);
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public List<Book> findAll() {
-        return bookRepository.findAll();
+    public List<BookDto> findAll() {
+        return bookRepository.findAll().stream()
+                .map(bookConverter::toDto)
+                .toList();
     }
 
     @Transactional
     @Override
-    public Book insert(String title, long authorId, long genreId) {
-        return save(0, title, authorId, genreId);
+    public BookDto insert(String title, long authorId, long genreId) {
+        var book = save(0, title, authorId, genreId);
+        return bookConverter.toDto(book);
     }
 
     @Transactional
     @Override
-    public Book update(long id, String title, long authorId, long genreId) {
-        return save(id, title, authorId, genreId);
+    public BookDto update(long id, String title, long authorId, long genreId) {
+        var book = save(id, title, authorId, genreId);
+        return bookConverter.toDto(book);
     }
 
     @Transactional

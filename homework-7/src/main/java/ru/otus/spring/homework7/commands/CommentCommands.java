@@ -3,7 +3,6 @@ package ru.otus.spring.homework7.commands;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.homework7.converters.CommentConverter;
 import ru.otus.spring.homework7.services.CommentService;
 
@@ -21,7 +20,7 @@ public class CommentCommands {
     @ShellMethod(value = "Find comment by id", key = "ci")
     public String findCommentById(long id) {
         return commentService.findById(id)
-                .map(commentConverter::commentToString)
+                .map(commentConverter::commentDtoToString)
                 .orElse("Comment with id %d not found".formatted(id));
     }
 
@@ -30,7 +29,7 @@ public class CommentCommands {
     public String findCommentByBookId(long id) {
         return commentService.findByBookId(id)
                 .stream()
-                .map(commentConverter::commentToString)
+                .map(commentConverter::commentDtoToString)
                 .collect(Collectors.joining("," + System.lineSeparator()));
     }
 
@@ -44,7 +43,7 @@ public class CommentCommands {
     @ShellMethod(value = "Update comment", key = "cupd")
     public String updateComment(long id, String text, long bookId) {
         var savedComment = commentService.update(id, text, bookId);
-        return commentConverter.commentToString(savedComment);
+        return commentConverter.commentDtoToString(savedComment);
     }
 
     // cdel 4

@@ -1,9 +1,9 @@
 package ru.otus.spring.homework7.services;
 
-import ru.otus.spring.homework7.models.Author;
+import ru.otus.spring.homework7.dto.AuthorDto;
 
 import java.util.List;
 
 public interface AuthorService {
-    List<Author> findAll();
+    List<AuthorDto> findAll();
 }
