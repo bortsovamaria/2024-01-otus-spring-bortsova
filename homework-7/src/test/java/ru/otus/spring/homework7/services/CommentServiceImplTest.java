@@ -7,8 +7,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.otus.spring.homework7.converters.CommentConverter;
 import ru.otus.spring.homework7.dto.CommentDto;
+import ru.otus.spring.homework7.dto.mapper.CommentMapper;
 import ru.otus.spring.homework7.models.Author;
 import ru.otus.spring.homework7.models.Book;
 import ru.otus.spring.homework7.models.Comment;
@@ -42,7 +42,7 @@ public class CommentServiceImplTest {
     CommentService commentService;
 
     @Autowired
-    CommentConverter commentConverter;
+    CommentMapper commentMapper;
 
     @DisplayName("должен корректно находить комментарий по идентификатору")
     @Test
@@ -51,7 +51,7 @@ public class CommentServiceImplTest {
                 new Comment(1L, "text", new Book(1, "title", new Author(), new Genre()));
         given(commentRepository.findById(eq(1L))).willReturn(Optional.of(expectedComment));
         Optional<CommentDto> actualComment = commentService.findById(1L);
-        actualComment.ifPresent(comment -> assertEquals(commentConverter.toDto(expectedComment), comment));
+        actualComment.ifPresent(comment -> assertEquals(commentMapper.toDTO(expectedComment), comment));
         verify(commentRepository, times(1)).findById(eq(1L));
     }
 
@@ -65,7 +65,7 @@ public class CommentServiceImplTest {
 
         given(bookRepository.findById(2L)).willReturn(Optional.of(book));
         List<CommentDto> actualComments = commentService.findByBookId(2L);
-        assertThat(actualComments).contains(commentConverter.toDto(expectedComment));
+        assertThat(actualComments).contains(commentMapper.toDTO(expectedComment));
     }
 
     @DisplayName("должен корректно добавлять комментарий")
@@ -79,7 +79,7 @@ public class CommentServiceImplTest {
         given(commentRepository.save(expectedComment)).willReturn(expectedComment);
         given(bookRepository.findById(eq(1L))).willReturn(Optional.of(book));
         CommentDto actualComment = commentService.insert("text", book.getId());
-        assertEquals(commentConverter.toDto(expectedComment), actualComment);
+        assertEquals(commentMapper.toDTO(expectedComment), actualComment);
         verify(commentRepository, times(1)).save(eq(expectedComment));
     }
 
@@ -95,7 +95,7 @@ public class CommentServiceImplTest {
         given(commentRepository.findById(1L)).willReturn(Optional.of(expectedComment));
         given(commentRepository.save(expectedComment)).willReturn(expectedComment);
         CommentDto actualComment = commentService.update(1L, "editcomment", book.getId());
-        assertEquals(commentConverter.toDto(expectedComment), actualComment);
+        assertEquals(commentMapper.toDTO(expectedComment), actualComment);
         verify(commentRepository, times(1)).save(eq(expectedComment));
     }
 

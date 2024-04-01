@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.spring.homework7.converters.AuthorConverter;
 import ru.otus.spring.homework7.dto.AuthorDto;
+import ru.otus.spring.homework7.dto.mapper.AuthorMapper;
 import ru.otus.spring.homework7.repositories.AuthorRepository;
 
 import java.util.List;
@@ -33,13 +34,16 @@ class AuthorServiceImplTest {
     @Autowired
     AuthorConverter authorConverter;
 
+    @Autowired
+    AuthorMapper authorMapper;
+
     @DisplayName("должен корректно находить всех авторов")
     @Test
     void shouldCorrectFindAllAuthors() {
         authorConverter = new AuthorConverter();
         given(authorRepository.findAll()).willReturn(getExpectedAuthors());
         List<AuthorDto> actualAuthors = authorService.findAll();
-        assertEquals(actualAuthors, getExpectedAuthors().stream().map(authorConverter::toDto).toList());
+        assertEquals(actualAuthors, getExpectedAuthors().stream().map(authorMapper::toDTO).toList());
         verify(authorRepository, times(1)).findAll();
     }
 }

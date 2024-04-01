@@ -3,11 +3,9 @@ package ru.otus.spring.homework7.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
-public class BookDto {
+public class BookPartDto {
 
     private long id;
 
@@ -16,6 +14,4 @@ public class BookDto {
     private AuthorDto author;
 
     private GenreDto genre;
-
-    List<CommentDto> comments;
 }

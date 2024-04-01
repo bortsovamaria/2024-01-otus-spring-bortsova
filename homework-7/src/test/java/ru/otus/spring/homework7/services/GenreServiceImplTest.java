@@ -7,8 +7,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.otus.spring.homework7.converters.GenreConverter;
 import ru.otus.spring.homework7.dto.GenreDto;
+import ru.otus.spring.homework7.dto.mapper.GenreMapper;
 import ru.otus.spring.homework7.repositories.GenreRepository;
 
 import java.util.List;
@@ -31,14 +31,14 @@ class GenreServiceImplTest {
     GenreService genreService;
 
     @Autowired
-    GenreConverter genreConverter;
+    GenreMapper genreMapper;
 
     @DisplayName("Должен корректно находить все жанры")
     @Test
     void findAll() {
         given(genreRepository.findAll()).willReturn(getExpectedGenres());
         List<GenreDto> actualGenres = genreService.findAll();
-        assertEquals(actualGenres, getExpectedGenres().stream().map(genreConverter::toDto).toList());
+        assertEquals(actualGenres, getExpectedGenres().stream().map(genreMapper::toDTO).toList());
         verify(genreRepository, times(1)).findAll();
     }
 }

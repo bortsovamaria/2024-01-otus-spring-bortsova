@@ -3,9 +3,9 @@ package ru.otus.spring.homework7.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.spring.homework7.converters.CommentConverter;
 import ru.otus.spring.homework7.dto.BookDto;
 import ru.otus.spring.homework7.dto.CommentDto;
+import ru.otus.spring.homework7.dto.mapper.CommentMapper;
 import ru.otus.spring.homework7.exceptions.EntityNotFoundException;
 import ru.otus.spring.homework7.models.Book;
 import ru.otus.spring.homework7.models.Comment;
@@ -25,18 +25,18 @@ public class CommentServiceImpl implements CommentService {
 
     private final BookService bookService;
 
-    private final CommentConverter commentConverter;
+    private final CommentMapper commentMapper;
 
     @Override
     public Optional<CommentDto> findById(long id) {
-        return commentRepository.findById(id).map(commentConverter::toDto);
+        return commentRepository.findById(id).map(commentMapper::toDTO);
     }
 
     @Override
     public List<CommentDto> findByBookId(long bookId) {
         Optional<BookDto> book = bookService.findById(bookId);
         if (book.isPresent()) {
-            return book.get().getCommentsDto();
+            return book.get().getComments();
         }
         throw new EntityNotFoundException("Book not found");
     }
@@ -45,14 +45,14 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto insert(String note, long bookId) {
         var comment = save(0, note, bookId);
-        return commentConverter.toDto(comment);
+        return commentMapper.toDTO(comment);
     }
 
     @Transactional
     @Override
     public CommentDto update(long id, String note, long bookId) {
         var comment = save(id, note, bookId);
-        return commentConverter.toDto(comment);
+        return commentMapper.toDTO(comment);
     }
 
     @Transactional

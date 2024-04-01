@@ -3,8 +3,9 @@ package ru.otus.spring.homework7.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.spring.homework7.converters.BookConverter;
 import ru.otus.spring.homework7.dto.BookDto;
+import ru.otus.spring.homework7.dto.BookPartDto;
+import ru.otus.spring.homework7.dto.mapper.BookMapper;
 import ru.otus.spring.homework7.exceptions.EntityNotFoundException;
 import ru.otus.spring.homework7.models.Book;
 import ru.otus.spring.homework7.repositories.AuthorRepository;
@@ -23,20 +24,20 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
-    private final BookConverter bookConverter;
+    private final BookMapper bookMapper;
 
     @Transactional(readOnly = true)
     @Override
     public Optional<BookDto> findById(long id) {
         return bookRepository.findById(id)
-                .map(bookConverter::toDto);
+                .map(bookMapper::toDTO);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<BookDto> findAll() {
+    public List<BookPartDto> findAll() {
         return bookRepository.findAll().stream()
-                .map(bookConverter::toDto)
+                .map(bookMapper::toPartDTO)
                 .toList();
     }
 
@@ -44,14 +45,14 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto insert(String title, long authorId, long genreId) {
         var book = save(0, title, authorId, genreId);
-        return bookConverter.toDto(book);
+        return bookMapper.toDTO(book);
     }
 
     @Transactional
     @Override
     public BookDto update(long id, String title, long authorId, long genreId) {
         var book = save(id, title, authorId, genreId);
-        return bookConverter.toDto(book);
+        return bookMapper.toDTO(book);
     }
 
     @Transactional

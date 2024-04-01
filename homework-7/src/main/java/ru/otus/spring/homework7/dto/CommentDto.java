@@ -9,6 +9,5 @@ public class CommentDto {
 
     private long id;
 
-    private String note;
-
+    private String text;
 }
