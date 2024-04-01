@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.spring.homework7.dto.GenreDto;
 import ru.otus.spring.homework7.dto.mapper.GenreMapper;
+import ru.otus.spring.homework7.dto.mapper.GenreMapperImpl;
 import ru.otus.spring.homework7.repositories.GenreRepository;
 
 import java.util.List;
@@ -21,7 +22,7 @@ import static ru.otus.spring.homework7.utils.GenreUtils.getExpectedGenres;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Сервис для работы с жанрами")
-@SpringBootTest(classes = GenreServiceImpl.class)
+@SpringBootTest(classes = {GenreServiceImpl.class, GenreMapperImpl.class})
 class GenreServiceImplTest {
 
     @MockBean

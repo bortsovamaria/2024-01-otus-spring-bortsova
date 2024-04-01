@@ -3,14 +3,11 @@ package ru.otus.spring.homework7.services;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.spring.homework7.dto.BookDto;
-import ru.otus.spring.homework7.dto.BookPartDto;
 import ru.otus.spring.homework7.dto.mapper.BookMapper;
 import ru.otus.spring.homework7.dto.mapper.BookMapperImpl;
 import ru.otus.spring.homework7.models.Author;
@@ -20,7 +17,6 @@ import ru.otus.spring.homework7.repositories.AuthorRepository;
 import ru.otus.spring.homework7.repositories.BookRepository;
 import ru.otus.spring.homework7.repositories.GenreRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,7 +29,7 @@ import static ru.otus.spring.homework7.utils.BookUtils.getExpectedBooks;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Сервис для работы с книгами ")
-@SpringBootTest(classes = {BookServiceImpl.class})
+@SpringBootTest(classes = {BookServiceImpl.class, BookMapperImpl.class})
 class BookServiceImplTest {
 
     @MockBean
@@ -48,18 +44,10 @@ class BookServiceImplTest {
     @Autowired
     BookService bookService;
 
-    @Spy
-    private BookMapper bookMapper = Mappers.getMapper(BookMapperImpl.class);
+    @Autowired
+    BookMapper bookMapper;
 //    @Spy
-//    private BookMapper bookMapper = Mappers.getMapper(BookMapper.class);
-
-//    @BeforeEach
-//    void setUp() {
-//        authorConverter = new AuthorConverter();
-//        genreConverter = new GenreConverter();
-//        commentConverter = new CommentConverter();
-//        bookConverter = new BookConverter(authorConverter, genreConverter, commentConverter);
-//    }
+//    private BookMapper bookMapper = Mappers.getMapper(BookMapperImpl.class);
 
     @DisplayName("должен корректно находить книгу по идентификатору")
     @Test
@@ -75,8 +63,7 @@ class BookServiceImplTest {
     @Test
     void shouldCorrectFindAllBooks() {
         given(bookRepository.findAll()).willReturn(getExpectedBooks());
-        List<BookPartDto> actualBooks = bookService.findAll();
-//        assertEquals(actualBooks, getExpectedBooks().stream().map(bookMapper::toPartDTO).toList());
+        bookService.findAll();
         verify(bookRepository, times(1)).findAll();
     }
 

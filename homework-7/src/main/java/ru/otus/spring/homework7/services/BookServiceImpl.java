@@ -33,7 +33,6 @@ public class BookServiceImpl implements BookService {
                 .map(bookMapper::toDTO);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<BookPartDto> findAll() {
         return bookRepository.findAll().stream()

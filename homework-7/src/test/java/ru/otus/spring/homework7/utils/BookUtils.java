@@ -11,14 +11,14 @@ import java.util.List;
 public class BookUtils {
 
     public static final String ALL_BOOK_RESULT =
-            "Id: 1, title: BookTitle_1, author: {Id: 1, FullName: Author_1}, genres: [Id: 1, Name: Genre_1],\r\n" +
-                    "Id: 2, title: BookTitle_2, author: {Id: 2, FullName: Author_2}, genres: [Id: 2, Name: Genre_2],\r\n" +
-                    "Id: 3, title: editedBook, author: {Id: 3, FullName: Author_3}, genres: [Id: 2, Name: Genre_2],\r\n" +
-                    "Id: 4, title: newBook, author: {Id: 1, FullName: Author_1}, genres: [Id: 1, Name: Genre_1]";
-    public static final String BOOK_BY_ID_RESULT = "Id: 2, title: BookTitle_2, author: {Id: 2, FullName: Author_2}, genres: [Id: 2, Name: Genre_2]";
+            "Id: 1, title: BookTitle_1, author: {AuthorDto(id=1, fullName=Author_1)}, genres: [GenreDto(id=1, name=Genre_1)],\r\n" +
+                    "Id: 2, title: BookTitle_2, author: {AuthorDto(id=2, fullName=Author_2)}, genres: [GenreDto(id=2, name=Genre_2)],\r\n" +
+                    "Id: 3, title: editedBook, author: {AuthorDto(id=3, fullName=Author_3)}, genres: [GenreDto(id=2, name=Genre_2)],\r\n" +
+                    "Id: 4, title: newBook, author: {AuthorDto(id=1, fullName=Author_1)}, genres: [GenreDto(id=1, name=Genre_1)]";
+    public static final String BOOK_BY_ID_RESULT = "Id: 2, title: BookTitle_2, author: {AuthorDto(id=2, fullName=Author_2)}, genres: [GenreDto(id=2, name=Genre_2)]";
 
-    public static final String ADD_NEW_BOOK_RESULT = "Id: 4, title: newBook, author: {Id: 1, FullName: Author_1}, genres: [Id: 1, Name: Genre_1]";
-    public static final String EDIT_BOOK_RESULT = "Id: 3, title: editedBook, author: {Id: 3, FullName: Author_3}, genres: [Id: 2, Name: Genre_2]";
+    public static final String ADD_NEW_BOOK_RESULT = "Id: 4, title: newBook, author: {AuthorDto(id=1, fullName=Author_1)}, genres: [GenreDto(id=1, name=Genre_1)]";
+    public static final String EDIT_BOOK_RESULT = "Id: 3, title: editedBook, author: {AuthorDto(id=3, fullName=Author_3)}, genres: [GenreDto(id=2, name=Genre_2)]";
 
     public static List<Book> getExpectedBooks() {
         return List.of(

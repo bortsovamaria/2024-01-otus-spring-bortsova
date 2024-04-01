@@ -1,9 +1,11 @@
 package ru.otus.spring.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.domain.Student;
 import ru.otus.spring.domain.TestResult;
 
+@RequiredArgsConstructor
 @Service
 public class TestRunnerServiceImpl implements TestRunnerService {
 
@@ -12,12 +14,6 @@ public class TestRunnerServiceImpl implements TestRunnerService {
     private final StudentService studentService;
 
     private final ResultService resultService;
-
-    public TestRunnerServiceImpl(TestService testService, StudentService studentService, ResultService resultService) {
-        this.testService = testService;
-        this.studentService = studentService;
-        this.resultService = resultService;
-    }
 
     @Override
     public void run() {

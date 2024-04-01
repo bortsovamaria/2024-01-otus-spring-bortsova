@@ -1,16 +1,14 @@
 package ru.otus.spring.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.domain.Student;
 
 @Service
+@RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
 
     private final IOService ioService;
-
-    public StudentServiceImpl(IOService ioService) {
-        this.ioService = ioService;
-    }
 
     @Override
     public Student determineCurrentStudent() {

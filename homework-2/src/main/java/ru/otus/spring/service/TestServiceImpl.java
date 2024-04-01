@@ -1,5 +1,6 @@
 package ru.otus.spring.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.dao.QuestionDao;
 import ru.otus.spring.domain.Answer;
@@ -11,16 +12,12 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
+@RequiredArgsConstructor
 public class TestServiceImpl implements TestService {
 
     private final IOService ioService;
 
     private final QuestionDao questionDao;
-
-    public TestServiceImpl(IOService ioService, QuestionDao questionDao) {
-        this.ioService = ioService;
-        this.questionDao = questionDao;
-    }
 
     @Override
     public TestResult executeTestFor(Student student) {
