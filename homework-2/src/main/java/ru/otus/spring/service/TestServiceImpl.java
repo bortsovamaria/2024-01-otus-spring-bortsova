@@ -11,8 +11,8 @@ import ru.otus.spring.domain.TestResult;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class TestServiceImpl implements TestService {
 
     private final IOService ioService;
