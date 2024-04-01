@@ -1,6 +1,5 @@
 package ru.otus.spring.dao;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.otus.spring.config.TestFileNameProvider;
 import ru.otus.spring.domain.Question;
@@ -15,13 +14,17 @@ import java.io.Reader;
 import java.util.List;
 import java.util.Objects;
 
-@RequiredArgsConstructor
 @Component
 public class CsvQuestionDao implements QuestionDao {
 
     private final QuestionStreamConvertService questionStreamConvertService;
 
     private final TestFileNameProvider fileNameProvider;
+
+    public CsvQuestionDao(QuestionStreamConvertService questionStreamConvertService, TestFileNameProvider fileNameProvider) {
+        this.questionStreamConvertService = questionStreamConvertService;
+        this.fileNameProvider = fileNameProvider;
+    }
 
     @Override
     public List<Question> getQuestions() {

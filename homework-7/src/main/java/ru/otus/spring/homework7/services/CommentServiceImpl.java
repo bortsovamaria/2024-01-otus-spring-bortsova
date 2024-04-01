@@ -1,8 +1,8 @@
 package ru.otus.spring.homework7.services;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.homework7.exceptions.EntityNotFoundException;
 import ru.otus.spring.homework7.models.Book;
 import ru.otus.spring.homework7.models.Comment;
@@ -20,14 +20,17 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
 
+    private final BookService bookService;
+
     @Override
     public Optional<Comment> findById(long id) {
         return commentRepository.findById(id);
     }
 
+//    @Transactional(readOnly = true)
     @Override
     public List<Comment> findByBookId(long bookId) {
-        Optional<Book> book = bookRepository.findById(bookId);
+        Optional<Book> book = bookService.findById(bookId);
         if (book.isPresent()) {
             return book.get().getComments();
         }

@@ -3,6 +3,7 @@ package ru.otus.spring.homework7.commands;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.homework7.converters.CommentConverter;
 import ru.otus.spring.homework7.services.CommentService;
 
