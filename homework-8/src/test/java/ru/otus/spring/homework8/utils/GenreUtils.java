@@ -14,9 +14,9 @@ public class GenreUtils {
 
     public static List<Genre> getExpectedGenres() {
         return List.of(
-                new Genre(1, "genre 1"),
-                new Genre(2, "genre 2"),
-                new Genre(3, "genre 3")
+                new Genre("1", "genre 1"),
+                new Genre("2", "genre 2"),
+                new Genre("3", "genre 3")
         );
     }
 }

@@ -7,7 +7,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.otus.spring.homework8.models.Genre;
+import ru.otus.spring.homework8.dto.GenreDto;
+import ru.otus.spring.homework8.dto.mapper.GenreMapper;
+import ru.otus.spring.homework8.dto.mapper.GenreMapperImpl;
 import ru.otus.spring.homework8.repositories.GenreRepository;
 
 import java.util.List;
@@ -20,7 +22,7 @@ import static ru.otus.spring.homework8.utils.GenreUtils.getExpectedGenres;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Сервис для работы с жанрами")
-@SpringBootTest(classes = GenreServiceImpl.class)
+@SpringBootTest(classes = {GenreServiceImpl.class, GenreMapperImpl.class})
 class GenreServiceImplTest {
 
     @MockBean
@@ -29,12 +31,15 @@ class GenreServiceImplTest {
     @Autowired
     GenreService genreService;
 
+    @Autowired
+    GenreMapper genreMapper;
+
     @DisplayName("Должен корректно находить все жанры")
     @Test
     void findAll() {
         given(genreRepository.findAll()).willReturn(getExpectedGenres());
-        List<Genre> actualGenres = genreService.findAll();
-        assertEquals(actualGenres, getExpectedGenres());
+        List<GenreDto> actualGenres = genreService.findAll();
+        assertEquals(actualGenres, getExpectedGenres().stream().map(genreMapper::toDTO).toList());
         verify(genreRepository, times(1)).findAll();
     }
 }

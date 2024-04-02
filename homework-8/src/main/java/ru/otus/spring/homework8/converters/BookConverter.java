@@ -2,20 +2,25 @@ package ru.otus.spring.homework8.converters;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.otus.spring.homework8.models.Book;
+import ru.otus.spring.homework8.dto.BookDto;
+import ru.otus.spring.homework8.dto.BookPartDto;
 
 @RequiredArgsConstructor
 @Component
 public class BookConverter {
-    private final AuthorConverter authorConverter;
+    public String bookDtoToString(BookDto bookDto) {
+        return "Id: %s, title: %s, author: {%s}, genres: [%s]".formatted(
+                bookDto.getId(),
+                bookDto.getTitle(),
+                bookDto.getAuthor(),
+                bookDto.getGenre());
+    }
 
-    private final GenreConverter genreConverter;
-
-    public String bookToString(Book book) {
-        return "Id: %d, title: %s, author: {%s}, genres: [%s]".formatted(
-                book.getId(),
-                book.getTitle(),
-                authorConverter.authorToString(book.getAuthor()),
-                genreConverter.genreToString(book.getGenre()));
+    public String bookDtoToString(BookPartDto bookDto) {
+        return "Id: %s, title: %s, author: {%s}, genres: [%s]".formatted(
+                bookDto.getId(),
+                bookDto.getTitle(),
+                bookDto.getAuthor(),
+                bookDto.getGenre());
     }
 }

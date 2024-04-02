@@ -3,6 +3,8 @@ package ru.otus.spring.homework8.commands;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import ru.otus.spring.homework8.converters.BookConverter;
+import ru.otus.spring.homework8.services.BookService;
 
 import java.util.stream.Collectors;
 
@@ -17,34 +19,34 @@ public class BookCommands {
     @ShellMethod(value = "Find all books", key = "ab")
     public String findAllBooks() {
         return bookService.findAll().stream()
-                .map(bookConverter::bookToString)
+                .map(bookConverter::bookDtoToString)
                 .collect(Collectors.joining("," + System.lineSeparator()));
     }
 
     @ShellMethod(value = "Find book by id", key = "bbid")
-    public String findBookById(long id) {
+    public String findBookById(String id) {
         return bookService.findById(id)
-                .map(bookConverter::bookToString)
-                .orElse("Book with id %d not found".formatted(id));
+                .map(bookConverter::bookDtoToString)
+                .orElse("Book with id %s not found".formatted(id));
     }
 
     // bins newBook 1 1
     @ShellMethod(value = "Insert book", key = "bins")
-    public String insertBook(String title, long authorId, long genreId) {
+    public String insertBook(String title, String authorId, String genreId) {
         var savedBook = bookService.insert(title, authorId, genreId);
-        return bookConverter.bookToString(savedBook);
+        return bookConverter.bookDtoToString(savedBook);
     }
 
     // bupd 4 editedBook 3 2
     @ShellMethod(value = "Update book", key = "bupd")
-    public String updateBook(long id, String title, long authorId, long genreId) {
+    public String updateBook(String id, String title, String authorId, String genreId) {
         var savedBook = bookService.update(id, title, authorId, genreId);
-        return bookConverter.bookToString(savedBook);
+        return bookConverter.bookDtoToString(savedBook);
     }
 
     // bdel 4
     @ShellMethod(value = "Delete book by id", key = "bdel")
-    public void deleteBook(long id) {
+    public void deleteBook(String id) {
         bookService.deleteById(id);
     }
 }

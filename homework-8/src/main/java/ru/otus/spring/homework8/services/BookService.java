@@ -1,19 +1,20 @@
 package ru.otus.spring.homework8.services;
 
 
-import ru.otus.spring.homework8.models.Book;
+import ru.otus.spring.homework8.dto.BookDto;
+import ru.otus.spring.homework8.dto.BookPartDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface BookService {
-    Optional<Book> findById(long id);
+    Optional<BookDto> findById(String id);
 
-    List<Book> findAll();
+    List<BookPartDto> findAll();
 
-    Book insert(String title, long authorId, long genreId);
+    BookDto insert(String title, String authorId, String genreId);
 
-    Book update(long id, String title, long authorId, long genreId);
+    BookDto update(String id, String title, String authorId, String genreId);
 
-    void deleteById(long id);
+    void deleteById(String id);
 }

@@ -7,7 +7,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.otus.spring.homework8.models.Author;
+import ru.otus.spring.homework8.dto.AuthorDto;
+import ru.otus.spring.homework8.dto.mapper.AuthorMapper;
+import ru.otus.spring.homework8.dto.mapper.AuthorMapperImpl;
 import ru.otus.spring.homework8.repositories.AuthorRepository;
 
 import java.util.List;
@@ -20,7 +22,7 @@ import static ru.otus.spring.homework8.utils.AuthorUtils.getExpectedAuthors;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Сервис для работы с авторами ")
-@SpringBootTest(classes = AuthorServiceImpl.class)
+@SpringBootTest(classes = {AuthorServiceImpl.class, AuthorMapperImpl.class})
 class AuthorServiceImplTest {
 
     @MockBean
@@ -29,12 +31,15 @@ class AuthorServiceImplTest {
     @Autowired
     AuthorService authorService;
 
+    @Autowired
+    AuthorMapper authorMapper;
+
     @DisplayName("должен корректно находить всех авторов")
     @Test
     void shouldCorrectFindAllAuthors() {
         given(authorRepository.findAll()).willReturn(getExpectedAuthors());
-        List<Author> actualAuthors = authorService.findAll();
-        assertEquals(actualAuthors, getExpectedAuthors());
+        List<AuthorDto> actualAuthors = authorService.findAll();
+        assertEquals(actualAuthors, getExpectedAuthors().stream().map(authorMapper::toDTO).toList());
         verify(authorRepository, times(1)).findAll();
     }
 }

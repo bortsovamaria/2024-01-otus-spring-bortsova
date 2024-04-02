@@ -1,19 +1,19 @@
 package ru.otus.spring.homework8.services;
 
-import ru.otus.spring.homework8.models.Comment;
+import ru.otus.spring.homework8.dto.CommentDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CommentService {
 
-    Optional<Comment> findById(long id);
+    Optional<CommentDto> findById(String id);
 
-    List<Comment> findByBookId(long bookId);
+    List<CommentDto> findByBookId(String bookId);
 
-    Comment insert(String text, long bookId);
+    CommentDto insert(String text, String bookId);
 
-    Comment update(long id, String text, long bookId);
+    CommentDto update(String id, String text, String bookId);
 
-    void deleteById(long id);
+    void deleteById(String id);
 }

@@ -14,9 +14,9 @@ public class AuthorUtils {
 
     public static List<Author> getExpectedAuthors() {
         return List.of(
-                new Author(1, "author 1"),
-                new Author(2, "author 2"),
-                new Author(3, "author 3")
+                new Author("1", "author 1"),
+                new Author("2", "author 2"),
+                new Author("3", "author 3")
         );
     }
 }

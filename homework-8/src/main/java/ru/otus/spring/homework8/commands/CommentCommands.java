@@ -18,37 +18,37 @@ public class CommentCommands {
 
     //ci 1
     @ShellMethod(value = "Find comment by id", key = "ci")
-    public String findCommentById(long id) {
+    public String findCommentById(String id) {
         return commentService.findById(id)
-                .map(commentConverter::commentToString)
-                .orElse("Comment with id %d not found".formatted(id));
+                .map(commentConverter::commentDtoToString)
+                .orElse("Comment with id %s not found".formatted(id));
     }
 
     //cbi 1
     @ShellMethod(value = "Find comment by book id", key = "cbi")
-    public String findCommentByBookId(long id) {
+    public String findCommentByBookId(String id) {
         return commentService.findByBookId(id)
                 .stream()
-                .map(commentConverter::commentToString)
+                .map(commentConverter::commentDtoToString)
                 .collect(Collectors.joining("," + System.lineSeparator()));
     }
 
     // acbi newComment 1
     @ShellMethod(value = "Add comment by book id", key = "acbi")
-    public void addCommentByBookId(String text, long bookId) {
+    public void addCommentByBookId(String text, String bookId) {
         commentService.insert(text, bookId);
     }
 
     // cupd 4 editComment 1
     @ShellMethod(value = "Update comment", key = "cupd")
-    public String updateComment(long id, String text, long bookId) {
+    public String updateComment(String id, String text, String bookId) {
         var savedComment = commentService.update(id, text, bookId);
-        return commentConverter.commentToString(savedComment);
+        return commentConverter.commentDtoToString(savedComment);
     }
 
     // cdel 4
     @ShellMethod(value = "Delete book by id", key = "cdel")
-    public void deleteBook(long id) {
+    public void deleteBook(String id) {
         commentService.deleteById(id);
     }
 }
