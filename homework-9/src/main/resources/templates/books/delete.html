@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit book</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<form id="delete-form" action="books/delete.html" th:method="post" th:action="@{/books/delete(id=${book.id})}" th:object="${book}">
+    <h3>Are you sure you want to delete the book?</h3>
+    <p th:text="${book.title}">Book</p>
+
+    <div class="row">
+        <button type="submit">Yes</button>
+        <a href="list.html" th:href="@{/books}">
+            <button type="button">No</button>
+        </a>
+    </div>
+</form>
+
+</body>
+</html>
