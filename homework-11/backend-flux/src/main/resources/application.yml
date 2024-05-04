@@ -1,0 +1,13 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5430/library
+    username: postgres
+    password: postgres
+  liquibase:
+    url: jdbc:postgresql://localhost:5430/library
+    user: postgres
+    password: postgres
+
+logging:
+  level:
+    org.springframework.jdbc.core.JdbcTemplate: TRACE
