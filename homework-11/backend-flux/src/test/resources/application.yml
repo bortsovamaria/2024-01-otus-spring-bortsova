@@ -1,23 +1,13 @@
 spring:
-  datasource:
-    url: jdbc:h2:mem:testdb
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5428/test_library
+    username: postgres
+    password: postgres
   liquibase:
-    enabled: false
-  sql:
-    init:
-      mode: always
-      data-locations: data.sql
-      schema-locations: schema.sql
-  jpa:
-    generate-ddl: false
-    hibernate:
-      ddl-auto: none
-  messages:
-    baseName: messages
-    encoding: UTF-8
-    fallbackToSystemLocale: false
-  shell:
-    interactive:
-      enabled: false
-  main:
-    allow-circular-references: false
+    url: jdbc:postgresql://localhost:5428/test_library
+    user: postgres
+    password: postgres
+
+logging:
+  level:
+    org.springframework.jdbc.core.JdbcTemplate: TRACE

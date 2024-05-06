@@ -1,39 +1,46 @@
-//package ru.otus.spring.homework11.controller;
-//
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-//import org.springframework.boot.test.mock.mockito.MockBean;
-//import org.springframework.test.web.servlet.MockMvc;
-//import ru.otus.spring.homework11.dto.mapper.GenreMapper;
-//import ru.otus.spring.homework11.models.Genre;
-//import ru.otus.spring.homework11.services.GenreService;
-//
-//import java.util.List;
-//
-//import static org.mockito.BDDMockito.given;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-//
-//@WebMvcTest(GenreController.class)
-//class GenreControllerTest {
-//
-//    @Autowired
-//    private MockMvc mvc;
-//
-//    @MockBean
-//    private GenreService genreService;
-//
-//    @MockBean
-//    private GenreMapper genreMapper;
-//
-//    @Test
-//    void shouldReturnCorrectAuthorList() throws Exception {
-//        List<Genre> genres = List.of(new Genre(1L, "genre1"));
-//        given(genreService.findAll()).willReturn(genres);
-//
-//        mvc.perform(get("/api/genres"))
-//                .andExpect(status().isOk())
-//                .andReturn();
-//    }
-//}
+package ru.otus.spring.homework11.controller;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.client.WebClient;
+import ru.otus.spring.homework11.dto.GenreDto;
+
+import java.time.Duration;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class GenreControllerTest {
+
+    @LocalServerPort
+    private int port;
+
+    @Test
+    void shouldReturnCorrectAuthorList() {
+
+        var client = WebClient.create(String.format("http://localhost:%d", port));
+        var expectedSize = 3;
+
+        //when
+        List<GenreDto> result = client
+                .get().uri("/api/genres")
+                .accept(MediaType.TEXT_EVENT_STREAM)
+                .retrieve()
+                .bodyToFlux(GenreDto.class)
+                .take(expectedSize)
+                .timeout(Duration.ofSeconds(3))
+                .collectList()
+                .block();
+
+        //then
+        assertThat(result).hasSize(3)
+                .contains(
+                        new GenreDto(1L, "Genre_1"),
+                        new GenreDto(2L, "Genre_2"),
+                        new GenreDto(3L, "Genre_3")
+                );
+    }
+}

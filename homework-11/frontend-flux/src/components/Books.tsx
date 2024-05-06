@@ -7,7 +7,6 @@ import {useBookListQuery} from "../api";
 export const Books = () => {
 
     const {data: books} = useBookListQuery();
-    console.log("books", books)
 
     return (
         <table className={styles.table}>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.otus.spring.homework11.dto.BookCreateDto;
+import ru.otus.spring.homework11.dto.BookDto;
 import ru.otus.spring.homework11.dto.BookUpdateDto;
 import ru.otus.spring.homework11.dto.mapper.AuthorMapper;
 import ru.otus.spring.homework11.dto.mapper.BookMapper;
@@ -24,21 +25,26 @@ import ru.otus.spring.homework11.repositories.GenreRepository;
 public class BookController {
 
     private final BookRepository bookRepository;
+
     private final AuthorRepository authorRepository;
+
     private final GenreRepository genreRepository;
+
     private final BookMapper bookMapper;
+
     private final AuthorMapper authorMapper;
+
     private final GenreMapper genreMapper;
 
     @GetMapping("/api/books")
-    public Flux<BookUpdateDto> findAllBooks() {
+    public Flux<BookDto> findAllBooks() {
         return bookRepository.findAll()
                 .flatMap(b -> Mono.zip(
                         Mono.just(b),
                         authorRepository.findById(b.getAuthorId()),
                         genreRepository.findById(b.getGenreId())
                 ))
-                .map(tuple -> bookMapper.toUpdateDTO(tuple.getT1(), tuple.getT2(), tuple.getT3()));
+                .map(tuple -> bookMapper.toDTO(tuple.getT1(), tuple.getT2(), tuple.getT3()));
     }
 
     @PostMapping("/api/books")
