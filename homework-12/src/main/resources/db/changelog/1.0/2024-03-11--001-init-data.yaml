@@ -1,0 +1,67 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2024-03-11--create-table-authors
+      author: mbortsova
+      changes:
+        - createTable:
+            tableName: authors
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_author
+              - column:
+                  name: full_name
+                  type: varchar(255)
+  - changeSet:
+      id: 2024-03-11--create-table-genres
+      author: mbortsova
+      changes:
+        - createTable:
+            tableName: genres
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_genre
+              - column:
+                  name: name
+                  type: varchar(255)
+  - changeSet:
+      id: 2024-03-11--create-table-books
+      author: mbortsova
+      changes:
+        - createTable:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_book
+              - column:
+                  name: title
+                  type: varchar(255)
+              - column:
+                  name: author_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_authors
+                    references: authors(id)
+              - column:
+                  name: genre_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_genres
+                    references: genres(id)
