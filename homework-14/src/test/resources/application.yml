@@ -1,0 +1,27 @@
+spring:
+  shell:
+    history:
+      enabled: false
+    interactive:
+      enabled: false
+    command:
+      version:
+        enabled: false
+  liquibase:
+    enabled: true
+
+  batch:
+    job:
+      enabled: false
+
+  data:
+    mongodb:
+      database: library
+      port: 0
+      host: localhost
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 4.0.2
