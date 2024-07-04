@@ -36,7 +36,4 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
   instance:
-#    instance-id: library-service:8082
     prefer-ip-address: true
-
-#server.port: 8082

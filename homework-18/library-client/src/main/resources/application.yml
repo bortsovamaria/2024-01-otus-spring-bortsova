@@ -20,4 +20,15 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      registerHealthIndicator: true
+
+resilience4j.timelimiter:
+  configs:
+    default:
+      timeoutDuration: 4s
+
+
 use: feign
