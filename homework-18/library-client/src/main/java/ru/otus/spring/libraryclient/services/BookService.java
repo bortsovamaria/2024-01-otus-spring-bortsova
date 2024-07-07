@@ -15,10 +15,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookService {
 
-    private final LibraryService feignProxy;
+    private final LibraryService libraryService;
 
     public List<BookDto> findAll() {
-        return feignProxy.getAllBooks();
+        return libraryService.getAllBooks();
     }
 
 }

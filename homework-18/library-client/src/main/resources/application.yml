@@ -23,12 +23,10 @@ eureka:
 resilience4j.circuitbreaker:
   configs:
     default:
-      registerHealthIndicator: true
-
-resilience4j.timelimiter:
-  configs:
-    default:
-      timeoutDuration: 4s
+      register-health-indicator: true
+      slowCallDurationThreshold: 4s
+      failureRateThreshold: 5
+      minimumNumberOfCalls: 2
 
 
 use: feign
