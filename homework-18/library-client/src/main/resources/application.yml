@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: library-client
+  profiles:
+    active: resilience4j
+  cloud:
+    config:
+      enabled: false
+    loadbalancer:
+      ribbon:
+        enabled: false
+
+server:
+  port: 8088
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      register-health-indicator: true
+      slowCallDurationThreshold: 4s
+      failureRateThreshold: 5
+      minimumNumberOfCalls: 2
+
+
+use: feign
